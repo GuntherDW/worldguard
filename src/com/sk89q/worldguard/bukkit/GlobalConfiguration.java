@@ -57,6 +57,8 @@ public class GlobalConfiguration {
 
     private iConomy iConomy;
 
+    public boolean godmode;
+
     /**
      * Construct the object.
      * 
@@ -66,6 +68,7 @@ public class GlobalConfiguration {
         this.plugin = plugin;
         this.worldConfig = new HashMap<String, WorldConfiguration>();
         this.iConomy = null;
+        this.godmode = plugin.getConfiguration().getBoolean("players.auto-god-mode", false);
     }
 
     /**
@@ -115,7 +118,7 @@ public class GlobalConfiguration {
 
         // Build initial lists of users matching the criteria
         for (Player player : plugin.getServer().getOnlinePlayers()) {
-            if (plugin.inGroup(player, "wg-invincible"))
+            if (this.godmode || plugin.inGroup(player, "wg-invincible"))
                 invinciblePlayers.add(player.getName());
 
             if (plugin.inGroup(player, "wg-amphibious"))

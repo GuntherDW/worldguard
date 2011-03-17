@@ -110,6 +110,7 @@ public abstract class Blacklist {
             return true;
         }
         boolean ret = true;
+        // System.out.println("checkBlacklist.java");
         for (BlacklistEntry entry : entries) {
             if (!entry.check(useAsWhitelist, event, forceRepeat, silent)) {
                 ret = false;

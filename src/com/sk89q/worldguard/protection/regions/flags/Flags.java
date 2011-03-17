@@ -32,7 +32,7 @@ public class Flags {
         TNT, LIGHTER, FIRE_SPREAD, LAVA_FIRE, CHEST_ACCESS, WATER_FLOW,
         LEVER_AND_BUTTON, PLACE_VEHICLE, GREET_MESSAGE, FAREWELL_MESSAGE,
         NOTIFY_GREET, NOTIFY_FAREWELL, DENY_SPAWN, HEAL_DELAY, HEAL_AMOUNT,
-        TELE_LOC, TELE_PERM, SPAWN_LOC, SPAWN_PERM, BUYABLE, PRICE
+        TELE_LOC, TELE_PERM, SPAWN_LOC, SPAWN_PERM, BUYABLE, PRICE, BLOCK_MOBS
     };
 
     // State flags
@@ -54,6 +54,8 @@ public class Flags {
     public static BooleanRegionFlagInfo BUYABLE = new BooleanRegionFlagInfo("buyable", FlagType.BUYABLE);
     public static BooleanRegionFlagInfo NOTIFY_GREET = new BooleanRegionFlagInfo("notifygreet", FlagType.NOTIFY_GREET);
     public static BooleanRegionFlagInfo NOTIFY_FAREWELL = new BooleanRegionFlagInfo("notifyfarewell", FlagType.NOTIFY_FAREWELL);
+    public static BooleanRegionFlagInfo BLOCK_MOBS = new BooleanRegionFlagInfo("blockmobs", FlagType.BLOCK_MOBS);
+    // registerFlag("blockmobs", FlagType.BLOCK_MOBS, FlagDataType.BOOLEAN);
 
     // Integer flags
     public static IntegerRegionFlagInfo HEAL_DELAY = new IntegerRegionFlagInfo("healdelay", FlagType.HEAL_DELAY);

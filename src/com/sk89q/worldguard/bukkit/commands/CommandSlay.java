@@ -39,25 +39,36 @@ public class CommandSlay extends WgCommand {
             throws CommandHandlingException {
         
         CommandHandler.checkArgs(args, 0, 1);
+        boolean isSlayAllowed = true;
+
+        if(sender instanceof Player)
+        {
+               isSlayAllowed = cfg.getWorldConfig(((Player)sender).getWorld().getName()).slayAllowed;
+        }
 
         // Allow killing other people
-        if (args.length > 0) {
-            plugin.checkPermission(sender, "slay.other");
+        if(isSlayAllowed)
+        {
+            if (args.length > 0) {
+                plugin.checkPermission(sender, "slay.other");
 
-            Player other = BukkitUtil.matchSinglePlayer(cfg.getWorldGuardPlugin().getServer(), args[0]);
-            if (other == null) {
-                sender.sendMessage(ChatColor.RED + "Player not found.");
-            } else {
-                other.setHealth(0);
-                sender.sendMessage(ChatColor.YELLOW + other.getName() + " has been killed!");
-                other.sendMessage(ChatColor.YELLOW + senderName + " has killed you!");
+                Player other = BukkitUtil.matchSinglePlayer(cfg.getWorldGuardPlugin().getServer(), args[0]);
+                if (other == null) {
+                    sender.sendMessage(ChatColor.RED + "Player not found.");
+                } else {
+                    other.setHealth(0);
+                    sender.sendMessage(ChatColor.YELLOW + other.getName() + " has been killed!");
+                    other.sendMessage(ChatColor.YELLOW + senderName + " has killed you!");
+                }
+            } else if (sender instanceof Player) {
+                plugin.checkPermission(sender, "slay");
+
+                Player player = (Player)sender;
+                player.setHealth(0);
+                player.sendMessage(ChatColor.YELLOW + "You have committed suicide!");
             }
-        } else if (sender instanceof Player) {
-            plugin.checkPermission(sender, "slay");
-            
-            Player player = (Player)sender;
-            player.setHealth(0);
-            player.sendMessage(ChatColor.YELLOW + "You have committed suicide!");
+        } else {
+            sender.sendMessage(ChatColor.YELLOW + "Slaying is disabled in this world!");
         }
 
         return true;

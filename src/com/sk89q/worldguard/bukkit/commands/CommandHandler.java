@@ -61,6 +61,8 @@ public class CommandHandler implements CommandExecutor {
         this.commandMap.put("rp", regionHandler);
         this.commandMap.put("reloadwg", new CommandReloadWG());
         this.commandMap.put("slay", new CommandSlay());
+        this.commandMap.put("slava", new CommandSLava());
+        this.commandMap.put("sradius", new CommandSRadius());
         this.commandMap.put("stopfire", new CommandStopFire());
 
         // commands that DO NOT support console as sender

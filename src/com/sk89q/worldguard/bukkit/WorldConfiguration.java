@@ -91,8 +91,13 @@ public class WorldConfiguration {
     public boolean buyOnClaim;
     public double buyOnClaimPrice;
     public int maxClaimVolume;
+    public int maxSpongeRadius;
+    public boolean simulateSpongeLava;
     public boolean claimOnlyInsideExistingRegions;
     public int maxRegionCountPerPlayer;
+    public int maxCreatureAmount;
+    public boolean slayAllowed;
+    public boolean autogodmode;
 
     /* Configuration data end */
 
@@ -123,6 +128,8 @@ public class WorldConfiguration {
         simulateSponge = config.getBoolean("simulation.sponge.enable", true);
         spongeRadius = Math.max(1, config.getInt("simulation.sponge.radius", 3)) - 1;
         redstoneSponges = config.getBoolean("simulation.sponge.redstone", false);
+        maxSpongeRadius = config.getInt("simulation.sponge.max-radius", 10);
+        simulateSpongeLava = config.getBoolean("simultion.sponge.lava", true);
 
         noPhysicsGravel = config.getBoolean("physics.no-physics-gravel", false);
         noPhysicsSand = config.getBoolean("physics.no-physics-sand", false);
@@ -146,6 +153,7 @@ public class WorldConfiguration {
         exactRespawn = config.getBoolean("spawn.exact-respawn", false);
         teleportToHome = config.getBoolean("spawn.teleport-to-home-on-death", false);
 
+        autogodmode       = config.getBoolean("player-damage.auto-god-mode", false);
         disableFallDamage = config.getBoolean("player-damage.disable-fall-damage", false);
         disableLavaDamage = config.getBoolean("player-damage.disable-lava-damage", false);
         disableFireDamage = config.getBoolean("player-damage.disable-fire-damage", false);
@@ -153,6 +161,7 @@ public class WorldConfiguration {
         disableSuffocationDamage = config.getBoolean("player-damage.disable-suffocation-damage", false);
         disableContactDamage = config.getBoolean("player-damage.disable-contact-damage", false);
         teleportOnSuffocation = config.getBoolean("player-damage.teleport-on-suffocation", false);
+        slayAllowed = config.getBoolean("player-damage.slay-enabled", true);
 
         useRegions = config.getBoolean("regions.enable", true);
         regionWand = config.getInt("regions.wand", 287);
@@ -174,6 +183,7 @@ public class WorldConfiguration {
                 blockCreatureSpawn.add(creature);
             }
         }
+        maxCreatureAmount = config.getInt("mobs.max-amount", 0);
 
         GlobalFlags globalFlags = new GlobalFlags();
         globalFlags.canBuild = config.getBoolean("regions.default.build", true);

@@ -56,3 +56,10 @@ commands:
     buyregion:
         description: Buy a buyable region
         usage: /<command> <region id> [info]
+    sradius:
+        description: Set the sponge radius in-game
+        usage: /<command>
+        aliases: [sr, srad]
+    slava:
+        description: Toggle the lava sponge in-game
+        usage: /<command>

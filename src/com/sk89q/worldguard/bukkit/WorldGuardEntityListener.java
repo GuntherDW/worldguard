@@ -19,6 +19,7 @@
 package com.sk89q.worldguard.bukkit;
 
 import com.sk89q.worldguard.protection.regions.flags.Flags;
+import org.bukkit.entity.*;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
@@ -27,13 +28,6 @@ import com.sk89q.worldguard.protection.regionmanager.RegionManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.CreatureType;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import com.sk89q.worldedit.Vector;
@@ -270,6 +264,7 @@ public class WorldGuardEntityListener extends EntityListener {
         GlobalConfiguration cfg = plugin.getGlobalConfiguration();
         Location l = event.getLocation();
         WorldConfiguration wcfg = cfg.getWorldConfig(l.getWorld().getName());
+        boolean isCancelled = false;
 
         if (event.getEntity() instanceof LivingEntity) {
 
@@ -288,26 +283,53 @@ public class WorldGuardEntityListener extends EntityListener {
                 Vector pt = toVector(l);
                 RegionManager mgr = plugin.getGlobalRegionManager().getRegionManager(wcfg.getWorldName());
 
-                if (!mgr.getApplicableRegions(pt).isStateFlagAllowed(Flags.CREEPER_EXPLOSION)) {
-                    event.setCancelled(true);
-                    return;
+                if(!mgr.getApplicableRegions(pt).getAffectedRegionId().equals(""))
+                {   if (!mgr.getApplicableRegions(pt).isStateFlagAllowed(Flags.CREEPER_EXPLOSION)) {
+                        event.setCancelled(true);
+                        return;
+                    }
                 }
             }
-        } else { // Shall assume that this is TNT
+        } else if(event.getEntity() instanceof TNTPrimed) { // Shall assume that this is TNT
             if (wcfg.blockTNT) {
-                event.setCancelled(true);
-                return;
+                isCancelled=true;
+                // plugin.getServer().getPlayer("GuntherDW").sendMessage("Blocked TNT!");
             }
 
             if (wcfg.useRegions) {
                 Vector pt = toVector(l);
                 RegionManager mgr = plugin.getGlobalRegionManager().getRegionManager(wcfg.getWorldName());
+                if(!mgr.getApplicableRegions(pt).getAffectedRegionId().equals(""))
+                {
+                    if (mgr.getApplicableRegions(pt).isStateFlagAllowed(Flags.TNT)) {
+                        // plugin.getServer().getPlayer("GuntherDW").sendMessage("Allowing TNT in zone "+mgr.getApplicableRegions(pt).getAffectedRegionId()+"!");
+                        isCancelled=false;
+                    }
+                }
 
-                if (!mgr.getApplicableRegions(pt).isStateFlagAllowed(Flags.TNT)) {
-                    event.setCancelled(true);
-                    return;
+            }
+        } else if(event.getEntity() instanceof Fireball) {
+            if (wcfg.blockCreeperBlockDamage) {
+                event.setCancelled(true);
+                return;
+            }
+            if (wcfg.useRegions) {
+                Vector pt = toVector(l);
+                RegionManager mgr = plugin.getGlobalRegionManager().getRegionManager(wcfg.getWorldName());
+
+                if(!mgr.getApplicableRegions(pt).getAffectedRegionId().equals(""))
+                {
+                    if (!mgr.getApplicableRegions(pt).isStateFlagAllowed(Flags.CREEPER_EXPLOSION)) {
+                        event.setCancelled(true);
+                        return;
+                    }
                 }
             }
+        }
+
+        if(isCancelled)
+        {
+            event.setCancelled(true);
         }
     }
 
@@ -324,9 +346,21 @@ public class WorldGuardEntityListener extends EntityListener {
         CreatureType creaType = event.getCreatureType();
         String creaName = "";
         Boolean cancelEvent = false;
+        // plugin.getServer().getPlayer("GuntherDW").sendMessage("GetName : "+event.getCreatureType().getName());
 
         if (wcfg.blockCreatureSpawn.contains(creaType)) {
-            cancelEvent = true;
+            // plugin.getServer().getPlayer("GuntherDW").sendMessage("Blocking "+creaType+" spawn.");
+            event.setCancelled(true);
+            return;
+        }
+
+        int AmountOfMobs = plugin.getServer().getWorld(wcfg.getWorldName()).getLivingEntities().size();
+        AmountOfMobs -= plugin.getServer().getWorld(wcfg.getWorldName()).getPlayers().size();
+
+        if(wcfg.maxCreatureAmount!=0 && wcfg.maxCreatureAmount < AmountOfMobs)
+        {
+            event.setCancelled(true);
+            return;
         }
 
         if (wcfg.useRegions) {
@@ -334,6 +368,14 @@ public class WorldGuardEntityListener extends EntityListener {
             RegionManager mgr = plugin.getGlobalRegionManager().getRegionManager(event.getEntity().getWorld().getName());
 
             Boolean flagValue = mgr.getApplicableRegions(pt).getStringFlag(Flags.DENY_SPAWN, true).getValue("").contains(creaType.getName());
+            if (flagValue != null) {
+                if (flagValue) {
+                    cancelEvent = true;
+                } else {
+                    cancelEvent = false;
+                }
+            }
+            flagValue = mgr.getApplicableRegions(pt).getBooleanFlag(Flags.BLOCK_MOBS, true).getValue();
             if (flagValue != null) {
                 if (flagValue) {
                     cancelEvent = true;

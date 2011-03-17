@@ -91,7 +91,7 @@ public class WorldGuardPlayerListener extends PlayerListener {
                     + "Fire spread is currently globally disabled.");
         }
 
-        if (plugin.inGroup(player, "wg-invincible")) {
+        if (cfg.godmode || plugin.inGroup(player, "wg-invincible")) {
             cfg.addInvinciblePlayer(player.getName());
         }
 

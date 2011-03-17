@@ -31,11 +31,11 @@ public class GlobalFlags {
     public boolean canAccessChests = false;
     public boolean canPvP = true;
     public boolean canLighter = true;
-    public boolean canTnt = true;
+    public boolean canTnt = false;
     public boolean canLeverandbutton = true;
     public boolean canPlaceVehicle = true;
-    public boolean allowCreeper = true;
-    public boolean allowMobDamage = true;
+    public boolean allowCreeper = false;
+    public boolean allowMobDamage = false;
     public boolean allowWaterflow = true;
 
 

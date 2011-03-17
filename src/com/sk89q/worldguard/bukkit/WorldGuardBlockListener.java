@@ -128,7 +128,13 @@ public class WorldGuardBlockListener extends BlockListener {
 
         if (!wcfg.itemDurability) {
             ItemStack held = player.getItemInHand();
-            if (held.getTypeId() > 0) {
+            int c = held.getTypeId();
+            if ((c>=256&&c<=259)
+                 || (c>=267&&c<=279)
+                 ||  c==346 /* fishing rod */
+                 || (c>=283&&c<=286)
+                 || (c>=290&&c<=294)
+                 || (c>=298&&c<=317)) {
                 held.setDurability((short) -1);
                 player.setItemInHand(held);
             }
@@ -153,7 +159,7 @@ public class WorldGuardBlockListener extends BlockListener {
                 return;
             }
 
-            if (wcfg.getBlacklist().check(
+            if (!wcfg.getBlacklist().check(
                     new DestroyWithBlacklistEvent(BukkitPlayer.wrapPlayer(plugin, player),
                     toVector(event.getBlock()),
                     player.getItemInHand().getTypeId()), false, false)) {
@@ -185,14 +191,16 @@ public class WorldGuardBlockListener extends BlockListener {
         GlobalConfiguration cfg = plugin.getGlobalConfiguration();
         WorldConfiguration wcfg = cfg.getWorldConfig(event.getBlock().getWorld().getName());
 
-        if (wcfg.simulateSponge && isWater) {
+        if ((wcfg.simulateSponge && isWater) || (wcfg.simulateSpongeLava && isLava)) {
             int ox = blockTo.getX();
             int oy = blockTo.getY();
             int oz = blockTo.getZ();
 
-            for (int cx = -wcfg.spongeRadius; cx <= wcfg.spongeRadius; cx++) {
-                for (int cy = -wcfg.spongeRadius; cy <= wcfg.spongeRadius; cy++) {
-                    for (int cz = -wcfg.spongeRadius; cz <= wcfg.spongeRadius; cz++) {
+	    int radius = (wcfg.spongeRadius>10?10:wcfg.spongeRadius);
+
+            for (int cx = -radius; cx <= radius; cx++) {
+                for (int cy = -radius; cy <= radius; cy++) {
+                    for (int cz = -radius; cz <= radius; cz++) {
                         Block sponge = world.getBlockAt(ox + cx, oy + cy, oz + cz);
                         if (sponge.getTypeId() == 19
                                 && (!wcfg.redstoneSponges || !sponge.isBlockIndirectlyPowered())) {
@@ -529,7 +537,7 @@ public class WorldGuardBlockListener extends BlockListener {
             int oy = blockPlaced.getY();
             int oz = blockPlaced.getZ();
 
-            clearSpongeWater(world, ox, oy, oz);
+            clearSpongeWater(world, ox, oy, oz, event.getPlayer());
         }
     }
 
@@ -668,7 +676,7 @@ public class WorldGuardBlockListener extends BlockListener {
                         Block sponge = world.getBlockAt(ox + cx, oy + cy, oz + cz);
                         if (sponge.getTypeId() == 19
                                 && sponge.isBlockIndirectlyPowered()) {
-                            clearSpongeWater(world, ox + cx, oy + cy, oz + cz);
+                            clearSpongeWater(world, ox + cx, oy + cy, oz + cz, null);
                         } else if (sponge.getTypeId() == 19
                                 && !sponge.isBlockIndirectlyPowered()) {
                             addSpongeWater(world, ox + cx, oy + cy, oz + cz);
@@ -689,15 +697,22 @@ public class WorldGuardBlockListener extends BlockListener {
      * @param oy
      * @param oz
      */
-    private void clearSpongeWater(World world, int ox, int oy, int oz) {
+    private void clearSpongeWater(World world, int ox, int oy, int oz, Player player) {
 
+        boolean perm;
         GlobalConfiguration cfg = plugin.getGlobalConfiguration();
         WorldConfiguration wcfg = cfg.getWorldConfig(world.getName());
+        if(player!= null)
+        {
+            perm = plugin.hasPermission(player, "removelava");
+        } else {
+            perm = false;
+        }
 
         for (int cx = -wcfg.spongeRadius; cx <= wcfg.spongeRadius; cx++) {
             for (int cy = -wcfg.spongeRadius; cy <= wcfg.spongeRadius; cy++) {
                 for (int cz = -wcfg.spongeRadius; cz <= wcfg.spongeRadius; cz++) {
-                    if (isBlockWater(world, ox + cx, oy + cy, oz + cz)) {
+                    if (isBlockWater(world, ox + cx, oy + cy, oz + cz) || (perm && isBlockLava(world, ox + cx, oy + cy, oz + cz))) {
                         world.getBlockAt(ox + cx, oy + cy, oz + cz).setTypeId(0);
                     }
                 }
@@ -808,6 +823,24 @@ public class WorldGuardBlockListener extends BlockListener {
         Block block = world.getBlockAt(ox, oy, oz);
         int id = block.getTypeId();
         if (id == 8 || id == 9) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Checks if the given block is lava
+     *
+     * @param world
+     * @param ox
+     * @param oy
+     * @param oz
+     */
+    private boolean isBlockLava(World world, int ox, int oy, int oz) {
+        Block block = world.getBlockAt(ox, oy, oz);
+        int id = block.getTypeId();
+        if (id == 10 || id == 11) {
             return true;
         } else {
             return false;

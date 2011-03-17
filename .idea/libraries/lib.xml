@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/prtree.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gson-1.7-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iConomy.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

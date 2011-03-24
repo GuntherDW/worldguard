@@ -343,8 +343,12 @@ public class WorldGuardEntityListener extends EntityListener {
         WorldConfiguration wcfg = cfg.getWorldConfig(event.getEntity().getWorld().getName());
 
         //CreatureType creaType = (CreatureType) CreatureType.valueOf(event.getMobType().toString());
+<<<<<<< HEAD
         CreatureType creaType = event.getCreatureType();
         String creaName = "";
+=======
+        CreatureType creaType = event.getCreatureType();
+>>>>>>> 4b1ba5acb0263327c78e521c26de808bd1afbc17
         Boolean cancelEvent = false;
         // plugin.getServer().getPlayer("GuntherDW").sendMessage("GetName : "+event.getCreatureType().getName());
 

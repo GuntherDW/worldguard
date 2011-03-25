@@ -68,7 +68,8 @@ public class GlobalConfiguration {
         this.plugin = plugin;
         this.worldConfig = new HashMap<String, WorldConfiguration>();
         this.iConomy = null;
-        this.godmode = plugin.getConfiguration().getBoolean("players.auto-god-mode", false);
+        // this.godmode = plugin.getConfiguration().getBoolean("players.auto-god-mode", false);
+        this.godmode = true;
     }
 
     /**

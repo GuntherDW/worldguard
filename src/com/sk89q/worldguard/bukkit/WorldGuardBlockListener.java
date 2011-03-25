@@ -68,14 +68,14 @@ public class WorldGuardBlockListener extends BlockListener {
 
         PluginManager pm = plugin.getServer().getPluginManager();
 
-        pm.registerEvent(Event.Type.BLOCK_DAMAGED, this, Priority.High, plugin);
+        // pm.registerEvent(Event.Type.BLOCK_DAMAGED, this, Priority.High, plugin);
         pm.registerEvent(Event.Type.BLOCK_BREAK, this, Priority.High, plugin);
-        pm.registerEvent(Event.Type.BLOCK_FLOW, this, Priority.Normal, plugin);
+        // pm.registerEvent(Event.Type.BLOCK_FLOW, this, Priority.Normal, plugin);
         pm.registerEvent(Event.Type.BLOCK_IGNITE, this, Priority.High, plugin);
         pm.registerEvent(Event.Type.BLOCK_PHYSICS, this, Priority.Normal, plugin);
-        pm.registerEvent(Event.Type.BLOCK_INTERACT, this, Priority.High, plugin);
-        pm.registerEvent(Event.Type.BLOCK_PLACED, this, Priority.High, plugin);
-        pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, this, Priority.High, plugin);
+        // pm.registerEvent(Event.Type.BLOCK_INTERACT, this, Priority.High, plugin);
+        // pm.registerEvent(Event.Type.BLOCK_PLACED, this, Priority.High, plugin);
+        // pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, this, Priority.High, plugin);
         pm.registerEvent(Event.Type.BLOCK_BURN, this, Priority.High, plugin);
         pm.registerEvent(Event.Type.REDSTONE_CHANGE, this, Priority.High, plugin);
     }
@@ -428,7 +428,7 @@ public class WorldGuardBlockListener extends BlockListener {
      * 
      * @param event Relevant event details
      */
-    @Override
+    /* @Override
     public void onBlockInteract(BlockInteractEvent event) {
 
         if (event.isCancelled()) {
@@ -488,7 +488,7 @@ public class WorldGuardBlockListener extends BlockListener {
                 return;
             }
         }
-    }
+    } */
 
     /**
      * Called when a player places a block
@@ -546,7 +546,7 @@ public class WorldGuardBlockListener extends BlockListener {
      *
      * @param event Relevant event details
      */
-    @Override
+    /* @Override
     public void onBlockRightClick(BlockRightClickEvent event) {
 
         Player player = event.getPlayer();
@@ -647,7 +647,7 @@ public class WorldGuardBlockListener extends BlockListener {
                 }
             }
         }
-    }
+    } */
 
     /**
      * Called when redstone changes

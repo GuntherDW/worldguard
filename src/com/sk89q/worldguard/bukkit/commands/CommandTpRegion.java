@@ -75,7 +75,7 @@ public class CommandTpRegion extends WgCommand {
                 location = region.getFlags().getLocationFlag(Flags.TELE_LOC).getValue(cfg.getWorldGuardPlugin().getServer());
             }
             if (location != null) {
-                player.teleportTo(location);
+                player.teleport(location);
                 return true;
             } else {
                 player.sendMessage(ChatColor.RED + "Region: " + id + " has no teleport/spawn location assign.");

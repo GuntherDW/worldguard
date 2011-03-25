@@ -148,7 +148,7 @@ public class TimedFlagsTimer implements Runnable {
                 Location newLoc = player.getLocation().clone();
                 newLoc.setX(newLoc.getBlockX() - 30);
                 newLoc.setY(newLoc.getWorld().getHighestBlockYAt(newLoc) + 1);
-                player.teleportTo(newLoc);
+                player.teleport(newLoc);
             }
             
         }

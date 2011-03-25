@@ -54,7 +54,7 @@ public class WorldGuardEntityListener extends EntityListener {
 
         PluginManager pm = plugin.getServer().getPluginManager();
 
-        pm.registerEvent(Event.Type.ENTITY_DAMAGED, this, Priority.High, plugin);
+        pm.registerEvent(Event.Type.ENTITY_DAMAGE, this, Priority.High, plugin);
         pm.registerEvent(Event.Type.ENTITY_EXPLODE, this, Priority.High, plugin);
         pm.registerEvent(Event.Type.CREATURE_SPAWN, this, Priority.High, plugin);
     }
@@ -342,18 +342,16 @@ public class WorldGuardEntityListener extends EntityListener {
         GlobalConfiguration cfg = plugin.getGlobalConfiguration();
         WorldConfiguration wcfg = cfg.getWorldConfig(event.getEntity().getWorld().getName());
 
-        //CreatureType creaType = (CreatureType) CreatureType.valueOf(event.getMobType().toString());
-<<<<<<< HEAD
         CreatureType creaType = event.getCreatureType();
-        String creaName = "";
-=======
-        CreatureType creaType = event.getCreatureType();
->>>>>>> 4b1ba5acb0263327c78e521c26de808bd1afbc17
         Boolean cancelEvent = false;
-        // plugin.getServer().getPlayer("GuntherDW").sendMessage("GetName : "+event.getCreatureType().getName());
+        if(creaType == null)
+        {
+            // System.out.println("[WorldGuard] CreatureType is null!");
+            // Humans?
+            return;
+        }
 
         if (wcfg.blockCreatureSpawn.contains(creaType)) {
-            // plugin.getServer().getPlayer("GuntherDW").sendMessage("Blocking "+creaType+" spawn.");
             event.setCancelled(true);
             return;
         }
@@ -425,7 +423,7 @@ public class WorldGuardEntityListener extends EntityListener {
                     loc.setX(x + 0.5);
                     loc.setY(y);
                     loc.setZ(z + 0.5);
-                    player.teleportTo(loc);
+                    player.teleport(loc);
                 }
 
                 return;

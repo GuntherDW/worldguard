@@ -271,7 +271,13 @@ public class WorldConfiguration {
             logger.log(Level.INFO, preventLavaFire
                     ? "WorldGuard: (" + worldName + ") Lava fire is blocked."
                     : "WorldGuard: (" + worldName + ") Lava fire is PERMITTED.");
-            
+            logger.log(Level.INFO, simulateSponge
+                    ? "WorldGuard: (" + worldName + ") Sponges are ENABLED."
+                    : "WorldGuard: (" + worldName + ") Sponges are DISABLED.");
+            logger.log(Level.INFO, simulateSpongeLava
+                    ? "WorldGuard: (" + worldName + ") Lava sponges are ENABLED."
+                    : "WorldGuard: (" + worldName + ") Lava sponges are DISABLED.");
+
             if (disableFireSpread) {
                 logger.log(Level.INFO, "WorldGuard: (" + worldName + ") All fire spread is disabled.");
             } else {

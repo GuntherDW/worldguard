@@ -175,7 +175,7 @@ public class WorldGuardBlockListener extends BlockListener {
      * @param event Relevant event details
      */
     @Override
-    public void onBlockFlow(BlockFromToEvent event) {
+    public void onBlockFromTo(BlockFromToEvent event) {
 
         if (event.isCancelled()) {
             return;

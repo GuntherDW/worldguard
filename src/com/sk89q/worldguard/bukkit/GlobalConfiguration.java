@@ -119,7 +119,7 @@ public class GlobalConfiguration {
 
         // Build initial lists of users matching the criteria
         for (Player player : plugin.getServer().getOnlinePlayers()) {
-            if (this.godmode || plugin.inGroup(player, "wg-invincible"))
+            // if (this.godmode || plugin.inGroup(player, "wg-invincible"))
                 invinciblePlayers.add(player.getName());
 
             if (plugin.inGroup(player, "wg-amphibious"))
